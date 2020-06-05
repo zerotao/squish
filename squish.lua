@@ -107,7 +107,9 @@ end
 -- -- -- -- -- -- -- --- -- -- -- -- -- -- -- --
 
 base_path = (base_path or "."):gsub("/$", "").."/"
-squishy_file = base_path .. "squishy";
+
+file_name = (os.getenv("SQUISH_FILE") or "squishy")
+squishy_file = base_path .. file_name;
 out_fn = opts.output;
 
 local ok, err = pcall(dofile, squishy_file);
