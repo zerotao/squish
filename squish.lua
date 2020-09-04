@@ -253,12 +253,22 @@ for _, module in ipairs(modules) do
 	end
 end
 
+function file_exists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
 if #resources > 0 then
 	print_verbose("Packing resources...")
 	f:write("do local resources = {};\n");
 	for _, resource in ipairs(resources) do
 		local name, path = resource.name, resource.path;
-		local res_file, err = io.open(base_path..path, "rb");
+		local res_file, err = nil, nil
+		if file_exists(base_path..path) then
+			res_file, err = io.open(base_path..path, "rb");
+		else
+			res_file, err = io.open(path, "rb");
+		end
 		if not res_file then
 			print_err("Couldn't load resource: "..tostring(err));
 			os.exit(1);
